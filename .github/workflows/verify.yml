@@ -1,0 +1,28 @@
+name: verificar-laboratorio
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  sqli-lab:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Rodar a verificacao do laboratorio
+        working-directory: demo
+        run: python verify.py
+
+      - name: Guardar a saida como artefato
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verify-output
+          path: demo/evidence/verify_output.txt

@@ -73,6 +73,18 @@ python app_fixed.py --port 8001
 
 O banco `lab.db` é criado na primeira execução, com três usuários fictícios.
 
+## Capturas
+
+| Tela | Arquivo |
+|---|---|
+| Login da versão vulnerável | ![01](evidence/img/01-login.png) |
+| Bypass aceito, com a consulta montada visível | ![02](evidence/img/02-bypass.png) |
+| Mesmo payload recusado na versão corrigida | ![03](evidence/img/03-corrigida.png) |
+
+As páginas exibem a consulta executada logo abaixo do resultado. Na versão
+vulnerável, o payload aparece dentro do SQL; na corrigida, ele aparece apenas
+como parâmetro. É o que transforma a captura em evidência.
+
 ## Limites do laboratório
 
 - Roda só em `127.0.0.1`, com banco local e dado fictício.

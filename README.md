@@ -1,77 +1,59 @@
-# DIO Agent — especializado em análise de vulnerabilidades
+# DIO Agent — análise de vulnerabilidades
 
-Evolução do [DIO Agent](https://github.com/digitalinnovationone/dio-agent)
-para um mentor de segurança de aplicação: em vez de responder direto, o agente
+[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776AB?logo=python&logoColor=white&style=flat-square)](https://www.python.org/)
+[![Teste do laboratório](https://img.shields.io/badge/teste-5%2F5-2ea043?style=flat-square)](#4-demonstração)
+[![OWASP](https://img.shields.io/badge/OWASP-A03%3A2021-9e1c1c?style=flat-square)](https://owasp.org/Top10/A03_2021-Injection/)
+[![DIO](https://img.shields.io/badge/desafio-DIO-6E56CF?style=flat-square)](https://dio.me)
+
+Evolução do [DIO Agent](https://github.com/digitalinnovationone/dio-agent) para
+um mentor de segurança de aplicação. Em vez de responder direto, o agente
 entende o contexto, classifica a falha, mede impacto e probabilidade, orienta a
 correção e valida o resultado.
 
-> Este repositório parte do projeto base da DIO. A especialização está na skill
-> `vulnerability-analysis`, no arquivo `agent/knowledge/security-basics.md` e nos
-> ajustes de persona e `AGENTS.md`. Nada de modelo treinado: o comportamento
-> vem dos arquivos em Markdown.
+Nada de modelo treinado: o comportamento vem dos arquivos em Markdown.
 
 ## 1. A especialização, e por quê
 
-O DIO Agent original é um mentor de estudos. Ele sabe montar plano de estudos,
-destravar desafio e revisar portfólio — mas não tem processo para analisar
-código inseguro. Se alguém pede "olha esse login", a resposta tende a ser
-genérica: "use consulta parametrizada".
+O DIO Agent original é um mentor de estudos: monta plano, destrava desafio,
+revisa portfólio. O que faltava era processo para olhar código inseguro. Sem
+processo, a resposta tende a ser genérica — "use consulta parametrizada" — e
+vem antes de saber onde o código roda.
 
-O problema não é a resposta estar errada. É ela vir antes do contexto. A mesma
-falha muda de gravidade conforme onde o código roda:
+A mesma falha muda de gravidade conforme o contexto:
 
-- um SQL Injection num script local de estudo é um exercício;
+- SQL Injection num script local de estudo é um exercício;
 - o mesmo SQL Injection no login de um servidor exposto, com dado de cliente,
   é incidente com prazo.
 
-Por isso a especialização tem três partes:
+A especialização tem três partes:
 
-| Parte | Papel |
-|---|---|
-| **Processo** (`skills/vulnerability-analysis/`) | Sete etapas fixas, da coleta de contexto à validação da correção |
-| **Vocabulário** (`agent/knowledge/security-basics.md`) | Vulnerabilidade, ameaça e risco, tríade CIA, superfície de ataque, projeto seguro |
-| **Postura** (`agent/persona.md` e `AGENTS.md`) | Investigar antes de opinar, falar em evidência, calibrar risco, recusar alvo de terceiros |
-
-## 2. Arquivos criados e alterados
-
-| Arquivo | Tipo | O que faz |
+| Parte | Arquivo | Papel |
 |---|---|---|
-| `skills/vulnerability-analysis/SKILL.md` | **criado** | O roteiro que o agente segue: enquadrar, reunir evidência, classificar (CWE/ATT&CK/OWASP), avaliar risco, explicar a exploração, corrigir e validar |
-| `skills/vulnerability-analysis/README.md` | **criado** | Explica a skill para pessoas: etapas, matriz de severidade, limites |
-| `agent/knowledge/security-basics.md` | **criado** | Base conceitual: vulnerabilidade × ameaça × risco, CIA, autenticação × autorização, validação × codificação de saída, princípios de projeto seguro |
-| `agent/persona.md` | alterado | Nova seção **Modo AppSec**: como o agente pensa e fala em segurança |
-| `AGENTS.md` | alterado | Linha da skill na tabela, item da base de conhecimento, regra 10 (perguntar antes de comandar) e limite de ambiente autorizado |
-| `demo/app.py` | criado | Login vulnerável a SQL Injection, em Python puro |
-| `demo/app_fixed.py` | criado | O mesmo login com consulta parametrizada |
-| `demo/verify.py` | criado | Prova, por HTTP, que o bypass funciona em uma versão e falha na outra |
-| `demo/README.md` | criado | Explica o laboratório e o que observar |
-| `demo/evidence/` | criado | Saída real da verificação e transcrição da sessão com o agente |
-| `README.md` | alterado | Este arquivo |
+| **Processo** | [`skills/vulnerability-analysis/SKILL.md`](skills/vulnerability-analysis/SKILL.md) | Sete etapas fixas, do contexto à validação |
+| **Vocabulário** | [`agent/knowledge/security-basics.md`](agent/knowledge/security-basics.md) | Vulnerabilidade × ameaça × risco, tríade CIA, superfície de ataque, projeto seguro |
+| **Postura** | [`agent/persona.md`](agent/persona.md) e [`AGENTS.md`](AGENTS.md) | Investigar antes de opinar, falar em evidência, calibrar risco |
 
 ### A skill em sete etapas
 
-1. **Enquadrar o alvo** — onde roda, quem alcança, quais dados toca.
-2. **Reunir evidência** — trecho de código, configuração, versões, erro.
-3. **Identificar e classificar** — CWE, MITRE ATT&CK, OWASP Top 10.
-4. **Avaliar** — impacto, probabilidade e severidade por matriz.
-5. **Explicar a exploração** — payload mínimo em laboratório e o que a falha
-   *não* permite.
-6. **Orientar a correção** — causa raiz, correção mínima, defesa em
-   profundidade, efeito colateral.
-7. **Validar** — repetir o payload, rodar o teste, procurar o mesmo padrão em
-   outros pontos.
+| # | Etapa | Saída |
+|---|---|---|
+| 1 | Enquadrar o alvo | Onde roda, quem alcança, quais dados toca |
+| 2 | Reunir evidência | Trecho, configuração, versões, erro |
+| 3 | Identificar e classificar | CWE, MITRE ATT&CK, OWASP Top 10 |
+| 4 | Avaliar | Impacto, probabilidade e severidade por matriz |
+| 5 | Explicar a exploração | Payload mínimo e o que a falha **não** permite |
+| 6 | Orientar a correção | Causa raiz, correção mínima, defesa em profundidade |
+| 7 | Validar | Repetir o payload, rodar o teste, procurar o mesmo padrão |
 
-Detalhe importante: a skill não tem resposta pronta. Ela define perguntas,
-ordem e formato. O conteúdo sai do código que o estudante enviar.
+A skill define perguntas, ordem e formato. O conteúdo sai do código que o
+estudante enviar — não há resposta pronta nela.
 
-## 3. A melhoria escolhida
+## 2. A melhoria escolhida
 
 Entre as ideias sugeridas, escolhi **fazer a análise sair sempre no mesmo
-formato**, com impacto, probabilidade e severidade. Motivo: sem formato fixo,
-dois casos analisados no mesmo dia saem incomparáveis — um vira parágrafo, o
-outro vira lista, e ninguém consegue priorizar.
-
-A matriz usada é qualitativa, inspirada em avaliação de risco:
+formato**, com impacto, probabilidade e severidade. Sem formato fixo, dois
+casos analisados no mesmo dia saem incomparáveis: um vira parágrafo, o outro
+vira lista, e ninguém consegue priorizar.
 
 | Impacto \ Probabilidade | Alta | Média | Baixa |
 |---|---|---|---|
@@ -79,13 +61,11 @@ A matriz usada é qualitativa, inspirada em avaliação de risco:
 | **Médio** | Alta | Média | Baixa |
 | **Baixo** | Média | Baixa | Informativa |
 
-O agente também declara o prazo sugerido de correção por severidade: Crítica e
-Alta antes de produção; Média na próxima janela; Baixa e Informativa no
-backlog. Isso aproxima a conversa do que um time faz na prática — e abre
-caminho para a ideia de DevSecOps, com a mesma ficha aplicada a cada alteração
-antes do deploy.
+A skill também declara o prazo sugerido por severidade: Crítica e Alta antes de
+produção; Média na próxima janela; Baixa e Informativa no backlog. É o gancho
+para DevSecOps — a mesma ficha aplicada a cada alteração antes do deploy.
 
-## 4. Como rodar
+## 3. Como rodar
 
 ### Com Hermes
 
@@ -107,25 +87,7 @@ chat comum.
 ### Com outro harness
 
 Qualquer harness que leia `AGENTS.md` funciona: Claude Code, Codex, OpenCode,
-Antigravity. Abra a pasta do projeto — a que contém o `AGENTS.md` — e converse.
-
-### Teste rápido
-
-```bash
-cd demo
-python verify.py
-```
-
-O script sobe as duas versões do login em `127.0.0.1`, em portas efêmeras, e
-compara as respostas. Saída esperada:
-
-```text
-[credencial valida]        app.py 200 | app_fixed.py 200
-[senha errada]             app.py 401 | app_fixed.py 401
-[bypass OR 1=1]            app.py 200 | app_fixed.py 401
-[comentario apos usuario]  app.py 200 | app_fixed.py 401
-[bypass no campo senha]    app.py 200 | app_fixed.py 401
-```
+Antigravity. Abra a pasta do projeto e converse.
 
 ### Conversa de exemplo
 
@@ -135,13 +97,67 @@ Quero entender a falha, o impacto e como corrigir.
 ```
 
 O esperado é o agente perguntar o contexto antes de sugerir qualquer coisa.
-A transcrição real está em
-[`demo/evidence/agent_session.md`](demo/evidence/agent_session.md), e a saída
-do teste em [`demo/evidence/verify_output.txt`](demo/evidence/verify_output.txt).
+
+## 4. Demonstração
+
+O laboratório tem duas versões do mesmo login, em Python puro (biblioteca
+padrão), rodando em `127.0.0.1` com banco temporário e usuários fictícios.
+
+| Versão vulnerável | Mesmo payload, versão corrigida |
+|---|---|
+| ![Login vulnerável aceitando o bypass](demo/evidence/img/02-bypass.png) | ![Versão corrigida recusando o mesmo payload](demo/evidence/img/03-corrigida.png) |
+| A consulta exibida contém o payload: `WHERE username = '' OR '1'='1' --'` | A consulta continua com `?`; o payload aparece só como parâmetro |
+
+A página mostra a consulta executada de propósito: o print vira prova, não
+ilustração.
+
+### Teste automatizado
+
+```bash
+cd demo
+python verify.py
+```
+
+```text
+[credencial valida]        app.py 200 | app_fixed.py 200
+[senha errada]             app.py 401 | app_fixed.py 401
+[bypass OR 1=1]            app.py 200 | app_fixed.py 401
+[comentario apos usuario]  app.py 200 | app_fixed.py 401
+[bypass no campo senha]    app.py 200 | app_fixed.py 401
+
+RESULTADO: comportamento esperado nos 5 casos
+```
+
+O teste confere status **e** corpo da resposta, para não dar "OK" a um 200 com
+página de erro. Roda também no GitHub Actions a cada push.
+
+### Evidências
+
+| Artefato | O que mostra |
+|---|---|
+| [`demo/evidence/agent_session.md`](demo/evidence/agent_session.md) | Conversa real com o agente: perguntas de contexto, análise e validação |
+| [`demo/evidence/verify_output.txt`](demo/evidence/verify_output.txt) | Saída completa do teste |
+| [`docs/relatorio-sqli.md`](docs/relatorio-sqli.md) | Relatório no formato padrão da skill |
+| [`demo/evidence/img/`](demo/evidence/img/) | Capturas de tela do laboratório |
+
+### O contraste que a skill faz
+
+A mesma pergunta foi enviada a um chat genérico, sem `AGENTS.md`, sem persona e
+sem a skill:
+
+| Aspecto | Com a skill | Chat genérico |
+|---|---|---|
+| Primeira ação | Leu o código e pediu contexto em três blocos | Entregou a análise completa de imediato |
+| Risco | Impacto Alto × Probabilidade Baixa = Média, com prazo | Descreveu impacto, sem matriz e sem prazo |
+| Exploração | Um payload mínimo, com o que a falha não permite | Bypass, `UNION` e time-based de uma vez |
+| Correção | Causa raiz, correção mínima, defesa em profundidade | Lista de cinco itens, incluindo trocar o framework |
+| Validação | Propôs teste e pediu confirmação | Não pediu validação |
+| Fechamento | Perguntou o que o estudante aprendeu | Encerrou na resposta |
+
+O chat genérico não errou o diagnóstico. Errou o processo: tratou como produção
+um arquivo de laboratório, entregou três vetores de uma vez e não mediu risco.
 
 ## 5. Resultado da análise
-
-Resumo do que a skill produz para o `demo/app.py`:
 
 | Campo | Valor |
 |---|---|
@@ -149,17 +165,34 @@ Resumo do que a skill produz para o `demo/app.py`:
 | CWE | CWE-89 |
 | OWASP Top 10 | A03:2021 Injection |
 | MITRE ATT&CK | T1190 só se a aplicação estiver exposta; em `127.0.0.1` não se aplica |
-| Impacto | Alto em potencial (bypass de login e leitura da tabela `users`); baixo no material atual, que é fictício e descartável |
-| Probabilidade | Baixa no laboratório: bind em `127.0.0.1`, sem exposição |
-| Severidade | Média (Alto × Baixa) no laboratório; sobe para Crítica se o padrão for reutilizado em serviço exposto |
-| Prazo sugerido | Antes de reutilizar o padrão em qualquer outro projeto |
+| Impacto | Alto em potencial; baixo no material atual, que é fictício |
+| Probabilidade | Baixa no laboratório |
+| Severidade | Média (Alto × Baixa); Crítica se o padrão for reutilizado em serviço exposto |
+| Prazo sugerido | Antes de reutilizar o padrão em outro projeto |
 | Correção | Consulta parametrizada, com defesa em profundidade |
-| Validação | `verify.py` confirma os cinco casos; o mesmo payload autentica em `app.py` e é recusado em `app_fixed.py` |
+| Validação | `verify.py` confirma os cinco casos |
 
-O laboratório usa dado fictício e roda só em `127.0.0.1`. A versão `app.py`
-existe para ser estudada, não usada.
+O raciocínio completo está em [`docs/relatorio-sqli.md`](docs/relatorio-sqli.md).
 
-## 6. Estrutura do repositório
+## 6. Arquivos criados e alterados
+
+| Arquivo | Tipo | O que faz |
+|---|---|---|
+| `skills/vulnerability-analysis/SKILL.md` | criado | O roteiro que o agente segue |
+| `skills/vulnerability-analysis/README.md` | criado | Explica a skill para pessoas |
+| `agent/knowledge/security-basics.md` | criado | Base conceitual de segurança |
+| `agent/persona.md` | alterado | Seção **Modo AppSec** |
+| `AGENTS.md` | alterado | Linha na tabela, item na base, regra 10 e limite de ambiente |
+| `demo/app.py` | criado | Login vulnerável, com a consulta exibida na página |
+| `demo/app_fixed.py` | criado | Login com consulta parametrizada |
+| `demo/verify.py` | criado | Verificação automatizada por HTTP |
+| `demo/README.md` | criado | Guia do laboratório |
+| `demo/evidence/` | criado | Conversa, saída do teste e capturas |
+| `docs/relatorio-sqli.md` | criado | Relatório no formato da skill |
+| `.github/workflows/verify.yml` | criado | CI que roda a verificação a cada push |
+| `README.md` | alterado | Este arquivo |
+
+## 7. Estrutura do repositório
 
 ```text
 dio-agent/
@@ -171,7 +204,7 @@ dio-agent/
 │       ├── learning-experiences.md
 │       └── security-basics.md    vocabulário de segurança
 ├── skills/
-│   ├── vulnerability-analysis/   a skill nova
+│   ├── vulnerability-analysis/
 │   │   ├── SKILL.md
 │   │   └── README.md
 │   ├── study-plan/
@@ -180,15 +213,23 @@ dio-agent/
 │   ├── web-search/
 │   ├── portfolio-review/
 │   └── ai-builder-path/
-└── demo/                         laboratório de SQL Injection
-    ├── app.py
-    ├── app_fixed.py
-    ├── verify.py
-    ├── README.md
-    └── evidence/
+├── demo/
+│   ├── app.py
+│   ├── app_fixed.py
+│   ├── verify.py
+│   ├── README.md
+│   └── evidence/
+│       ├── agent_session.md
+│       ├── verify_output.txt
+│       └── img/
+├── docs/
+│   ├── glossary.md
+│   ├── youcom-mcp.md
+│   └── relatorio-sqli.md
+└── .github/workflows/verify.yml
 ```
 
-## 7. Skills disponíveis
+## 8. Skills disponíveis
 
 | Skill | Para que serve | Arquivo |
 |---|---|---|
@@ -200,7 +241,7 @@ dio-agent/
 | Revisão de portfólio | Feedback sobre GitHub e portfólio antes da vaga | [`skills/portfolio-review/SKILL.md`](skills/portfolio-review/SKILL.md) |
 | Caminho AI Builder | Próximo passo na Carreira AI Builder | [`skills/ai-builder-path/SKILL.md`](skills/ai-builder-path/SKILL.md) |
 
-## 8. Limites
+## 9. Limites
 
 - A skill vale para código e laboratório do próprio estudante.
 - O agente não testa sistema de terceiros, não pede credencial e não entrega
@@ -209,7 +250,7 @@ dio-agent/
 - As senhas do laboratório ficam em texto puro de propósito, como segundo
   defeito para um exercício separado.
 
-## 9. Créditos
+## 10. Créditos
 
 Projeto base: [digitalinnovationone/dio-agent](https://github.com/digitalinnovationone/dio-agent).
 Esta é uma especialização independente, feita para o desafio da DIO.
