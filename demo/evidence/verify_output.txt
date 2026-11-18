@@ -1,0 +1,44 @@
+==============================================================================
+  SQL Injection no login - verificacao automatizada
+  alvo: 127.0.0.1 (laboratorio local)
+==============================================================================
+
+[credencial valida]
+  payload: usuario='admin' senha='admin123'
+[app] 127.0.0.1 "POST /login HTTP/1.1" 200 -
+[app_fixed] 127.0.0.1 "POST /login HTTP/1.1" 200 -
+  app.py        -> HTTP 200 | Bem-vindo, admin (papel: admin). | esperado 200 OK
+  app_fixed.py  -> HTTP 200 | Bem-vindo, admin (papel: admin). | esperado 200 OK
+
+[senha errada]
+  payload: usuario='admin' senha='senha-errada'
+[app] 127.0.0.1 "POST /login HTTP/1.1" 401 -
+[app_fixed] 127.0.0.1 "POST /login HTTP/1.1" 401 -
+  app.py        -> HTTP 401 | Credenciais invalidas | esperado 401 OK
+  app_fixed.py  -> HTTP 401 | Credenciais invalidas | esperado 401 OK
+
+[bypass OR 1=1]
+  payload: usuario="' OR '1'='1' --" senha='x'
+[app] 127.0.0.1 "POST /login HTTP/1.1" 200 -
+[app_fixed] 127.0.0.1 "POST /login HTTP/1.1" 401 -
+  app.py        -> HTTP 200 | Bem-vindo, admin (papel: admin). | esperado 200 OK
+  app_fixed.py  -> HTTP 401 | Credenciais invalidas | esperado 401 OK
+
+[comentario apos usuario]
+  payload: usuario="admin'--" senha='x'
+[app] 127.0.0.1 "POST /login HTTP/1.1" 200 -
+[app_fixed] 127.0.0.1 "POST /login HTTP/1.1" 401 -
+  app.py        -> HTTP 200 | Bem-vindo, admin (papel: admin). | esperado 200 OK
+  app_fixed.py  -> HTTP 401 | Credenciais invalidas | esperado 401 OK
+
+[bypass no campo senha]
+  payload: usuario='admin' senha="' OR '1'='1' --"
+[app] 127.0.0.1 "POST /login HTTP/1.1" 200 -
+[app_fixed] 127.0.0.1 "POST /login HTTP/1.1" 401 -
+  app.py        -> HTTP 200 | Bem-vindo, admin (papel: admin). | esperado 200 OK
+  app_fixed.py  -> HTTP 401 | Credenciais invalidas | esperado 401 OK
+
+==============================================================================
+  RESULTADO: comportamento esperado nos 5 casos
+  app.py aceita o bypass; app_fixed.py recusa o mesmo payload.
+==============================================================================
