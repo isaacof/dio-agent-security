@@ -14,6 +14,13 @@ Registro da análise do `demo/app.py` conduzida pelo DIO Agent com a skill
 - As respostas do estudante (turno 2 e turno 3) fazem parte do cenário de
   demonstração. Nenhum comando foi executado pelo agente; ele só leu arquivos.
 
+> **Nota sobre os números de linha.** A sessão foi conduzida sobre a versão
+> anterior do laboratório, sem o CSS e sem o bloco que exibe a consulta na
+> página. A falha é a mesma, mas o arquivo cresceu e os números citados na
+> conversa mudaram. As referências atuais estão em
+> [`docs/relatorio-sqli.md`](../../docs/relatorio-sqli.md), que foi atualizado
+> depois do redesenho. O texto da conversa ficou como foi produzido.
+
 O mesmo `AGENTS.md` é lido pelo Hermes e pelos demais harnesses compatíveis. O
 que muda é a sala; o mentor é o mesmo.
 

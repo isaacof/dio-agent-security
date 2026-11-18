@@ -97,15 +97,19 @@ def init_db() -> None:
     conn.close()
 
 
-def authenticate(username: str, password: str) -> sqlite3.Row | None:
-    """Autentica concatenando o que veio do formulario direto no SQL."""
-    query = (
+def build_query(username: str, password: str) -> str:
+    """Monta a consulta concatenando o que veio do formulario."""
+    return (
         "SELECT id, username, role FROM users "
         f"WHERE username = '{username}' AND password = '{password}'"
     )
+
+
+def authenticate(username: str, password: str) -> sqlite3.Row | None:
+    """Autentica com a consulta montada por concatenacao."""
     conn = connect()
     try:
-        return conn.execute(query).fetchone()
+        return conn.execute(build_query(username, password)).fetchone()
     finally:
         conn.close()
 
@@ -158,10 +162,7 @@ class Handler(BaseHTTPRequestHandler):
         username = form.get("username", [""])[0]
         password = form.get("password", [""])[0]
 
-        query = (
-            "SELECT id, username, role FROM users "
-            f"WHERE username = '{username}' AND password = '{password}'"
-        )
+        query = build_query(username, password)
 
         row = authenticate(username, password)
         if row is None:

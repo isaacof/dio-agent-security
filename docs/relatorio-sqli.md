@@ -10,7 +10,7 @@ verificação em [`demo/evidence/verify_output.txt`](../demo/evidence/verify_out
 | Campo | Valor |
 |---|---|
 | Falha | SQL Injection na autenticação, por concatenação de string |
-| Local | `demo/app.py`, `authenticate()` (linhas 73–76) |
+| Local | `demo/app.py`, `build_query()` (linhas 100–105) |
 | CWE | CWE-89 — Improper Neutralization of Special Elements used in an SQL Command |
 | OWASP Top 10 | A03:2021 Injection |
 | MITRE ATT&CK | T1190 só se a aplicação estiver exposta à internet; no laboratório local, não se aplica |
