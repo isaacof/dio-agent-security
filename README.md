@@ -1,6 +1,7 @@
 # DIO Agent — análise de vulnerabilidades
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776AB?logo=python&logoColor=white&style=flat-square)](https://www.python.org/)
+[![CI](https://img.shields.io/github/actions/workflow/status/isaacof/dio-agent-security/verify.yml?branch=main&style=flat-square&label=CI)](https://github.com/isaacof/dio-agent-security/actions)
 [![Teste do laboratório](https://img.shields.io/badge/teste-5%2F5-2ea043?style=flat-square)](#4-demonstração)
 [![OWASP](https://img.shields.io/badge/OWASP-A03%3A2021-9e1c1c?style=flat-square)](https://owasp.org/Top10/A03_2021-Injection/)
 [![DIO](https://img.shields.io/badge/desafio-DIO-6E56CF?style=flat-square)](https://dio.me)
