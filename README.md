@@ -89,14 +89,20 @@ antes do deploy.
 
 ### Com Hermes
 
+Instale o Hermes conforme a documentação oficial:
+https://hermes-agent.nousresearch.com/docs
+
+Depois, sempre **na pasta do projeto** — é isso que faz o agente encontrar
+`AGENTS.md`, a persona, o conhecimento e as skills:
+
 ```bash
-# na pasta do projeto (é isso que faz o agente achar os arquivos)
-cd dio-agent
+git clone https://github.com/isaacof/dio-agent-security.git
+cd dio-agent-security
 hermes
 ```
 
-A documentação oficial do harness está em
-https://hermes-agent.nousresearch.com/docs.
+Se abrir o Hermes em outra pasta, ele não vê estes arquivos e responde como um
+chat comum.
 
 ### Com outro harness
 
